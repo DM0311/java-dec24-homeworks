@@ -26,7 +26,7 @@ public class AppHomework4 {
     public static void method2(int[] intArray) {
         int sum = 0;
         for (int i = 0; i < intArray.length; i++) {
-            if (intArray[i] > 0) {
+            if (intArray[i] > 5) {
                 sum += intArray[i];
             }
         }
@@ -46,7 +46,7 @@ public class AppHomework4 {
     }
 
     public static void method5(int[] intArray) {
-        int middle = (int) intArray.length / 2;
+        int middle = intArray.length / 2;
         int sum1 = 0;
         int sum2 = 0;
         for (int i = 0; i < intArray.length; i++) {
