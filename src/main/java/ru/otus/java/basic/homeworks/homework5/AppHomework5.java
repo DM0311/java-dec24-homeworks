@@ -1,6 +1,6 @@
-package ru.otus.java.basic.homeworks.homework4;
+package ru.otus.java.basic.homeworks.homework5;
 
-public class AppHomework4 {
+public class AppHomework5 {
     public static void main(String[] args) {
 
         //Homework base part
