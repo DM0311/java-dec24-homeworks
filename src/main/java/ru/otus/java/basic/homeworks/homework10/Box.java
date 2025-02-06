@@ -5,7 +5,6 @@ public class Box {
     private int length;
     private int height;
     private String color;
-    private boolean isEmpty;
     private boolean isOpened;
     private String item;
 
@@ -14,8 +13,6 @@ public class Box {
         this.length = length;
         this.height = height;
         this.color = color;
-        this.isEmpty = true;
-        this.isOpened = false;
     }
 
 
@@ -34,9 +31,8 @@ public class Box {
     }
 
     public void putIn(String item) {
-        if (isEmpty && isOpened) {
+        if (this.item==null && isOpened) {
             this.item = item;
-            isEmpty = false;
             System.out.println("В коробку положили предмет: " + item);
         } else {
             System.out.println("В коробку нельзя поместить предмет!");
@@ -44,8 +40,8 @@ public class Box {
     }
 
     public void takeOut() {
-        if (!isEmpty && isOpened) {
-            isEmpty = false;
+        if (this.item!=null&& isOpened) {
+            this.item = null;
             System.out.println("Из коробки выкинули предмет.");
         } else {
             System.out.println("Невозможно выкинуть предмет!");
@@ -53,7 +49,7 @@ public class Box {
 
     }
 
-    public void openBox() {
+    public void open() {
         if (!isOpened) {
             isOpened = true;
             System.out.println("Коробка открылась.");
@@ -62,7 +58,7 @@ public class Box {
         }
     }
 
-    public void closeBox() {
+    public void close() {
         if (isOpened) {
             isOpened = false;
             System.out.println("Коробка закрылась.");

@@ -26,12 +26,12 @@ public class AppHomework10 {
         box1.changeColor("синий");
         box1.takeOut();
         box1.putIn("Игрушка");
-        box1.openBox();
+        box1.open();
         box1.putIn("Игрушка");
         box1.info();
-        box1.closeBox();
+        box1.close();
         box1.takeOut();
-        box1.openBox();
+        box1.open();
         box1.takeOut();
 
     }
