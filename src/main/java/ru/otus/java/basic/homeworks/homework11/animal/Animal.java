@@ -7,6 +7,10 @@ public abstract class Animal {
     int staminaForRunningPerMeter = 1;
 
     public int run(int distance) {
+        if (distance<0){
+            System.out.println("Дистанция не может быть отрицательной");
+            return -1;
+        }
         if (distance * staminaForRunningPerMeter > stamina) {
             System.out.println("Животное устало");
             return -1;

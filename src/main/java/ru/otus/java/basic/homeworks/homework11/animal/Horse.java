@@ -6,12 +6,16 @@ public class Horse extends Animal {
 
     public Horse(String name, int runSpeed, int swimSpeed, int stamina) {
         this.name = name;
-        this.runSpeed = runSpeed;
-        this.stamina = stamina;
-        this.swimSpeed = swimSpeed;
+        this.runSpeed = runSpeed>0? runSpeed:1;
+        this.stamina = stamina>0? stamina:1;
+        this.swimSpeed = swimSpeed>0? swimSpeed:1;
     }
 
     public int swim(int distance) {
+        if(distance<0) {
+            System.out.println("Дистанция не может быть отрицательной");
+            return -1;
+        }
         if (distance * staminaForSwimmingPerMeter > stamina) {
             System.out.println("Животное устало");
             return -1;
