@@ -1,8 +1,8 @@
 package ru.otus.java.basic.homeworks.homework11;
 
-import ru.otus.java.basic.homeworks.homework11.animal.Cat;
-import ru.otus.java.basic.homeworks.homework11.animal.Dog;
-import ru.otus.java.basic.homeworks.homework11.animal.Horse;
+import ru.otus.java.basic.homeworks.homework11.animals.Cat;
+import ru.otus.java.basic.homeworks.homework11.animals.Dog;
+import ru.otus.java.basic.homeworks.homework11.animals.Horse;
 
 public class AppHomework11 {
     public static void main(String[] args) {
