@@ -6,12 +6,12 @@ import ru.otus.java.basic.homeworks.homework13.transport.Transport;
 
 public class Human {
     private String name;
-    private int humanEndurance;
+    private int endurance;
     private Transport currentTransport;
 
-    public Human(String name, int humanEndurance) {
+    public Human(String name, int endurance) {
         this.name = name;
-        this.humanEndurance = humanEndurance;
+        this.endurance = endurance;
     }
 
     public void getIn(Transport transport) {
@@ -34,11 +34,11 @@ public class Human {
             return;
         }
         if (this.currentTransport instanceof Bicycle) {
-            if (humanEndurance <= distance / 3) {
+            if (endurance <= distance / 3) {
                 System.out.println("У челвоека недостаточно выносливости чтобы столько ехать на велосипеде");
                 return;
             } else {
-                this.humanEndurance -= distance / 3;
+                this.endurance -= distance / 3;
             }
         }
         this.currentTransport.move(distance, terrain);
@@ -48,7 +48,7 @@ public class Human {
     public String toString() {
         return "Human{" +
                 "name='" + name + '\'' +
-                ", humanEndurance=" + humanEndurance +
+                ", humanEndurance=" + endurance +
                 ", currentTransport=" + currentTransport +
                 '}';
     }
