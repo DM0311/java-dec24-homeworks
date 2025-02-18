@@ -33,15 +33,16 @@ public class Human {
             System.out.println("Человек идет пешком");
             return;
         }
-        if (this.currentTransport instanceof Bicycle) {
-            if (endurance <= distance / 3) {
-                System.out.println("У челвоека недостаточно выносливости чтобы столько ехать на велосипеде");
-                return;
-            } else {
-                this.endurance -= distance / 3;
-            }
+        this.currentTransport.move(distance, terrain, this);
+    }
+
+    public boolean wasteEndurance(int distance) {
+        if (this.endurance <= distance / 3) {
+            System.out.println("У челвоека недостаточно выносливости");
+            return false;
         }
-        this.currentTransport.move(distance, terrain);
+        this.endurance -= distance / 3;
+        return true;
     }
 
     @Override

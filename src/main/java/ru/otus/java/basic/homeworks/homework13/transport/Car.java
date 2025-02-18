@@ -1,5 +1,6 @@
 package ru.otus.java.basic.homeworks.homework13.transport;
 
+import ru.otus.java.basic.homeworks.homework13.Human;
 import ru.otus.java.basic.homeworks.homework13.Terrain;
 
 public class Car extends Transport {
@@ -10,7 +11,7 @@ public class Car extends Transport {
     }
 
     @Override
-    public boolean move(int distance, Terrain terrain) {
+    public boolean move(int distance, Terrain terrain, Human driver) {
 
         if (!(terrain.equals(Terrain.FOREST) || terrain.equals(Terrain.SWAMP))) {
             if (distance <= fuel * 2) {
