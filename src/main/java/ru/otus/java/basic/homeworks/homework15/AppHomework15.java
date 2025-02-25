@@ -28,9 +28,11 @@ public class AppHomework15 {
                         {"13", "14", "15","16"},
                 };
         try {
-            System.out.println(sumArrayElements(array3));
-        } catch (RuntimeException e) {
-            System.out.println(e);
+            System.out.println("Сумма элементов массива: " + sumArrayElements(array3));
+        } catch (AppArraySizeException e) {
+            System.err.println("Ошибка размерности массива: " + e.getMessage());
+        } catch (AppArrayDataException e) {
+            System.err.println("Ошибка данных: " + e.getMessage());
         }
 
 
@@ -39,7 +41,7 @@ public class AppHomework15 {
     public static int sumArrayElements(String[][] array) throws AppArraySizeException, AppArrayDataException {
 
         if (array.length != 4 || array[0].length != 4) {
-            throw new AppArrayDataException("Превышена размерность массива");
+            throw new AppArraySizeException("Превышена размерность массива");
         }
 
         int sum = 0;
@@ -52,7 +54,7 @@ public class AppHomework15 {
                 try {
                     int num = Integer.parseInt(array[i][j]);
                     sum += num;
-                } catch (RuntimeException e) {
+                } catch (NumberFormatException e) {
                     throw new AppArrayDataException("Нвозможно преобразовать в число элемент массива с координатами [" + i + "] [" + j + "].");
                 }
             }
