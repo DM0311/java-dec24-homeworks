@@ -83,7 +83,10 @@ public class AppHomework16 {
     }
 
     public static boolean isOlderThan(List<Employee> employees, int averageAge) {
-        int currentAverageAge = 0;
+        if(employees.isEmpty()){
+            return false;
+        }
+        double currentAverageAge = 0;
         int counter = 0;
         for (Employee employee : employees) {
             currentAverageAge += employee.getAge();
@@ -92,7 +95,10 @@ public class AppHomework16 {
         return currentAverageAge / counter > averageAge;
     }
 
-    public static Employee getYoungest(List<Employee> employees) {
+    public static Employee getYoungest(List<Employee> employees) throws IllegalArgumentException {
+        if(employees.isEmpty()){
+            throw new IllegalArgumentException("List of employees is empty!");
+        }
         Employee youngest = employees.get(0);
         for (Employee employee : employees) {
             if (employee.getAge() < youngest.getAge()) {
