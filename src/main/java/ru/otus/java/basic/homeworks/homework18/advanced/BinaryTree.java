@@ -1,33 +1,51 @@
 package ru.otus.java.basic.homeworks.homework18.advanced;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class BinaryTree<T extends Comparable> implements SearchTree {
+public class BinaryTree<T extends Comparable<T>> implements SearchTree<T> {
 
-    TreeElement root = null;
+    TreeElement<T> root = null;
     List<T> sortedList;
 
-    public BinaryTree(List<T> sortedList) {
+    public BinaryTree(List<T> sortedList, boolean shuffling) {
         this.sortedList = sortedList;
-        for(T item :sortedList){
-            TreeElement element = new TreeElement<>(item);
+        var arrCopy = new ArrayList<>(sortedList);
+        if (shuffling){
+            Collections.shuffle(arrCopy);
+        }
+        for(T item :arrCopy){
+            var element = new TreeElement<>(item);
             insertItem(element);
         }
     }
 
+    public BinaryTree(List<T> sortedList){
+        this(sortedList,false);
+    }
+
 
     @Override
-    public Object find(Integer element) {
-        TreeElement searchedElement = new TreeElement<>(element);
+    public T find(T element) {
         if(root==null){
             throw new RuntimeException("Binary Tree has no elements");
         }
-        if (root.getValue()==element){
-            return root.getValue();
-        } else if (element>root.getValue()) {
+        return recursionFind(root, element);
+    }
 
+    private T recursionFind(TreeElement<T> leaf, T findElement){
+        if(leaf == null){
+            return null;
         }
-        return root.getValue();
+        var compared = leaf.getValue().compareTo(findElement);
+        if (compared == 0){
+            return leaf.getValue();
+        } else if (compared > 0) {
+            return recursionFind(leaf.getLeft(), findElement);
+        }else{
+            return recursionFind(leaf.getRight(), findElement);
+        }
     }
 
     @Override
@@ -35,8 +53,7 @@ public class BinaryTree<T extends Comparable> implements SearchTree {
         return sortedList;
     }
 
-
-    private void insertItem(TreeElement item) {
+    private void insertItem(TreeElement<T> item) {
         if (this.root == null) {
             this.root = item;
             return;
@@ -44,7 +61,7 @@ public class BinaryTree<T extends Comparable> implements SearchTree {
         this.insertItem(this.root, item);
     }
 
-    private void insertItem(TreeElement rootItem, TreeElement newItem) {
+    private void insertItem(TreeElement<T> rootItem, TreeElement<T> newItem) {
         if (newItem.getValue().compareTo(rootItem.getValue())<0) {
             if (rootItem.getLeft() == null) {
                 rootItem.setLeft(newItem);
@@ -54,7 +71,7 @@ public class BinaryTree<T extends Comparable> implements SearchTree {
         }
         if (newItem.getValue().compareTo(rootItem.getValue())>0) {
             if (rootItem.getRight() ==  null) {
-                rootItem.setRight(newItem);;
+                rootItem.setRight(newItem);
             } else {
                 this.insertItem(rootItem.getRight(), newItem);
             }
