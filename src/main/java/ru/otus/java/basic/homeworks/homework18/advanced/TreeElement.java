@@ -1,44 +1,48 @@
 package ru.otus.java.basic.homeworks.homework18.advanced;
 
-public class TreeElement<T extends Comparable<T>> {
-    private T value;
-    private TreeElement left;
-    private TreeElement right;
-    private TreeElement parent;
+public class TreeElement<C extends Comparable> {
+    private C value;
+    private TreeElement<C> left;
+    private TreeElement<C> right;
+    private TreeElement<C> parent;
 
 
-    public TreeElement(T value) {
+    public TreeElement(C value) {
         this.value = value;
         this.left = null;
         this.right = null;
         this.parent = null;
     }
 
-    public TreeElement getLeft() {
+    public C getValue() {
+        return value;
+    }
+
+    public void setValue(C value) {
+        this.value = value;
+    }
+
+    public TreeElement<C> getLeft() {
         return left;
     }
 
-    public void setLeft(TreeElement left) {
+    public void setLeft(TreeElement<C> left) {
         this.left = left;
     }
 
-    public TreeElement getRight() {
+    public TreeElement<C> getRight() {
         return right;
     }
 
-    public void setRight(TreeElement right) {
+    public void setRight(TreeElement<C> right) {
         this.right = right;
     }
 
-    public TreeElement getParent() {
+    public TreeElement<C> getParent() {
         return parent;
     }
 
-    public void setParent(TreeElement parent) {
+    public void setParent(TreeElement<C> parent) {
         this.parent = parent;
-    }
-
-    public T getValue() {
-        return value;
     }
 }
