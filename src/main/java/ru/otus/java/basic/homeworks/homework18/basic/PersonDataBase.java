@@ -1,10 +1,20 @@
 package ru.otus.java.basic.homeworks.homework18.basic;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PersonDataBase {
-    private Map<Long, Person> personMap = new HashMap<>();
+    private Map<Long, Person> personMap;
+    private final EnumSet<Position> managers;
+
+    public PersonDataBase() {
+        this.personMap = new HashMap<>();
+        this.managers = EnumSet.of(Position.MANAGER,
+                Position.DIRECTOR,
+                Position.BRANCH_DIRECTOR,
+                Position.SENIOR_MANAGER);
+    }
 
     public Person findById(Long id) throws RuntimeException {
         if (personMap.containsKey(id)) {
@@ -21,12 +31,7 @@ public class PersonDataBase {
         if (!personMap.containsKey(person.getId())) {
             throw new RuntimeException("В базе нет такого сотрудника");
         }
-        Position currentPosition = person.getPosition();
-        if (currentPosition == Position.MANAGER || currentPosition == Position.DIRECTOR
-                || currentPosition == Position.BRANCH_DIRECTOR || currentPosition == Position.SENIOR_MANAGER) {
-            return true;
-        }
-        return false;
+        return managers.contains(person.getPosition());
     }
 
     public boolean isEmployee(Long id) {

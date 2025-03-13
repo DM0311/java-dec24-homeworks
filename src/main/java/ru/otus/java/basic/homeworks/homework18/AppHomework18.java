@@ -25,7 +25,6 @@ public class AppHomework18 {
 
         try {
             System.out.println(personDataBase.findById(123456L));
-            //System.out.println(personDataBase.findById(123L));
             System.out.println(personDataBase.isEmployee(123456L));
             System.out.println(personDataBase.isManager(bob));
         } catch (RuntimeException e) {
