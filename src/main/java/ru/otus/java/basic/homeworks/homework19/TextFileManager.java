@@ -42,12 +42,10 @@ public class TextFileManager {
                     filePath.append(cmd);
                     textFileEditor.readAndPrint(filePath.toString());
                     String text = userCommand.readUserCommand();
-                    textFileEditor.writeFile(filePath.toString(),text);
+                    textFileEditor.writeFile(filePath.toString(), text);
                 }
             }
         }
-
-
     }
 
     private void printFilesFromDirectory() {
@@ -60,18 +58,4 @@ public class TextFileManager {
         System.out.println("Для редактирования файла введите имя файла.");
         System.out.println("Для завершения работы введите команду QUIT");
     }
-
-/*    private void userAction() {
-        String command = scanner.nextLine();
-        switch (command) {
-            case "QUIT" -> {
-                isRunning = false;
-            }
-            default -> {
-                StringBuilder filePath = new StringBuilder(rootDir);
-                filePath.append(command);
-                textFileEditor.editFile(filePath.toString());
-            }
-        }
-    }*/
 }
