@@ -2,23 +2,22 @@ package ru.otus.java.basic.homeworks.homework19;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.Scanner;
 
 public class TextFileManager {
 
-    private final Scanner scanner;
     private final FileFilter filter;
     private final File file;
     private boolean isRunning;
     private TextFileEditor textFileEditor;
+    private UserCommand userCommand;
     private String rootDir;
 
     public TextFileManager(String rootDir, String fileType) {
         this.rootDir = rootDir;
         this.file = new File(rootDir);
         this.isRunning = false;
-        this.scanner = new Scanner(System.in);
         this.textFileEditor = new TextFileEditor();
+        this.userCommand = new UserCommand();
         this.filter = new FileFilter() {
             public boolean accept(File file) {
                 if (file.getName().endsWith(fileType)) {
@@ -33,7 +32,19 @@ public class TextFileManager {
         this.isRunning = true;
         while (isRunning) {
             printFilesFromDirectory();
-            userAction();
+            String cmd = userCommand.readUserCommand();
+            switch (cmd) {
+                case "QUIT" -> {
+                    isRunning = false;
+                }
+                default -> {
+                    StringBuilder filePath = new StringBuilder(rootDir);
+                    filePath.append(cmd);
+                    textFileEditor.readAndPrint(filePath.toString());
+                    String text = userCommand.readUserCommand();
+                    textFileEditor.writeFile(filePath.toString(),text);
+                }
+            }
         }
 
 
@@ -50,7 +61,7 @@ public class TextFileManager {
         System.out.println("Для завершения работы введите команду QUIT");
     }
 
-    private void userAction() {
+/*    private void userAction() {
         String command = scanner.nextLine();
         switch (command) {
             case "QUIT" -> {
@@ -62,5 +73,5 @@ public class TextFileManager {
                 textFileEditor.editFile(filePath.toString());
             }
         }
-    }
+    }*/
 }
