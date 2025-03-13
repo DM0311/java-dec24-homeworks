@@ -11,8 +11,10 @@ public class TextFileManager {
     private final File file;
     private boolean isRunning;
     private TextFileEditor textFileEditor;
+    private String rootDir;
 
     public TextFileManager(String rootDir, String fileType) {
+        this.rootDir = rootDir;
         this.file = new File(rootDir);
         this.isRunning = false;
         this.scanner = new Scanner(System.in);
@@ -54,7 +56,10 @@ public class TextFileManager {
             case "QUIT" -> {
                 isRunning = false;
             }
-            default -> {textFileEditor.editFile(command);
+            default -> {
+                StringBuilder filePath = new StringBuilder(rootDir);
+                filePath.append(command);
+                textFileEditor.editFile(filePath.toString());
             }
         }
     }
