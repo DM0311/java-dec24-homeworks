@@ -10,15 +10,16 @@ public class TextFileManager {
     private final FileFilter filter;
     private final File file;
     private boolean isRunning;
+    private TextFileEditor textFileEditor;
 
     public TextFileManager(String rootDir, String fileType) {
         this.file = new File(rootDir);
         this.isRunning = false;
         this.scanner = new Scanner(System.in);
-        this.filter = new FileFilter()
-        {
+        this.textFileEditor = new TextFileEditor();
+        this.filter = new FileFilter() {
             public boolean accept(File file) {
-                if (file.getName().endsWith("fileType")) {
+                if (file.getName().endsWith(fileType)) {
                     return true;
                 }
                 return false;
@@ -26,8 +27,35 @@ public class TextFileManager {
         };
     }
 
-    public void runManager(){
-        this.isRunning=true;
+    public void runManager() {
+        this.isRunning = true;
+        while (isRunning) {
+            printFilesFromDirectory();
+            userAction();
+        }
+
+
+    }
+
+    private void printFilesFromDirectory() {
+        System.out.println();
         System.out.printf("%-20s %-5s\n", "NAME", "SIZE");
+        for (File f : file.listFiles(filter)) {
+            System.out.printf("%-20s %-5s byte\n", f.getName(), f.length());
+        }
+        System.out.println();
+        System.out.println("Для редактирования файла введите имя файла.");
+        System.out.println("Для завершения работы введите команду QUIT");
+    }
+
+    private void userAction() {
+        String command = scanner.nextLine();
+        switch (command) {
+            case "QUIT" -> {
+                isRunning = false;
+            }
+            default -> {textFileEditor.editFile(command);
+            }
+        }
     }
 }
