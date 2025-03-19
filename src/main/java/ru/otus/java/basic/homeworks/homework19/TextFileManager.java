@@ -5,7 +5,7 @@ import java.io.FileFilter;
 
 public class TextFileManager {
 
-    private final FileFilter filter;
+    private final FileFilter textFileFilter;
     private final File file;
     private boolean isRunning;
     private TextFileEditor textFileEditor;
@@ -18,7 +18,7 @@ public class TextFileManager {
         this.isRunning = false;
         this.textFileEditor = new TextFileEditor();
         this.userCommand = new UserCommand();
-        this.filter = new FileFilter() {
+        this.textFileFilter = new FileFilter() {
             public boolean accept(File file) {
                 if (file.getName().endsWith(fileType)) {
                     return true;
@@ -42,7 +42,10 @@ public class TextFileManager {
                     filePath.append(cmd);
                     textFileEditor.readAndPrint(filePath.toString());
                     String text = userCommand.readUserCommand();
-                    textFileEditor.writeFile(filePath.toString(), text);
+                    if(file.exists()){
+                        textFileEditor.writeFile(filePath.toString(), text);
+                    }
+                    System.out.println("Выбранного файла не существует!");
                 }
             }
         }
@@ -51,7 +54,7 @@ public class TextFileManager {
     private void printFilesFromDirectory() {
         System.out.println();
         System.out.printf("%-20s %-5s\n", "NAME", "SIZE");
-        for (File f : file.listFiles(filter)) {
+        for (File f : file.listFiles(textFileFilter)) {
             System.out.printf("%-20s %-5s byte\n", f.getName(), f.length());
         }
         System.out.println();

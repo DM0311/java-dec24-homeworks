@@ -1,7 +1,6 @@
 package ru.otus.java.basic.homeworks.homework19;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public class TextFileEditor {
 
@@ -13,13 +12,12 @@ public class TextFileEditor {
     public String read(String filePath) {
         StringBuilder builder = new StringBuilder();
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath))) {
-            int n = reader.read();
-            do {
+            int n;
+            while ((n = reader.read()) != -1) {
                 builder.append((char) n);
-                n = reader.read();
-            } while (n > 0);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка: " + e.getMessage());
         }
         return builder.toString();
     }
@@ -28,10 +26,10 @@ public class TextFileEditor {
         StringBuilder builder = new StringBuilder();
         builder.append(read(filePath));
         builder.append(text);
-        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filePath))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(builder.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка: " + e.getMessage());
         }
     }
 }
