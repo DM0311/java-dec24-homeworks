@@ -1,7 +1,7 @@
 package ru.otus.java.basic.homeworks.homework21;
 
 public class AppHomework21 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         fillArray();
         fillArrayMultiThread();
     }
@@ -14,12 +14,12 @@ public class AppHomework21 {
         for (int i = 0; i < array.length; i++) {
             array[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
         }
-        
+
         System.out.println("Время заполнения массива мс:");
         System.out.println(System.currentTimeMillis() - millis);
     }
 
-    public static void fillArrayMultiThread(){
+    public static void fillArrayMultiThread() throws InterruptedException {
 
         double[] array = new double[100_000_000];
 
@@ -34,6 +34,11 @@ public class AppHomework21 {
         t2.start();
         t3.start();
         t4.start();
+
+        t1.join();
+        t2.join();
+        t3.join();
+        t4.join();
 
         System.out.println("Время заполнения массива мс:");
         System.out.println(System.currentTimeMillis() - millis);

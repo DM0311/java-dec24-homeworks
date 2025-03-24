@@ -5,10 +5,10 @@ public class MyTask implements Runnable {
     private int startIndex;
     private int endIndex;
 
-    public MyTask(double[] targetArray, int startIndex, int andIndex) {
+    public MyTask(double[] targetArray, int startIndex, int endIndex) {
         this.targetArray = targetArray;
         this.startIndex = startIndex;
-        this.endIndex = andIndex;
+        this.endIndex = endIndex;
     }
 
     private void fillArray() {
@@ -16,8 +16,6 @@ public class MyTask implements Runnable {
             targetArray[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
         }
     }
-
-    ;
 
     @Override
     public void run() {
