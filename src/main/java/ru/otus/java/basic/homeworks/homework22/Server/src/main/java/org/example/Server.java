@@ -44,10 +44,10 @@ public class Server {
     }
 
     public void sendDirectMessage(String message, String fromUserName, String toUserName) {
-        if(clients.containsKey(toUserName)){
-            clients.get(toUserName).sendMsg(fromUserName+": "+message);
-        }else {
-            clients.get(fromUserName).sendMsg("SERVER: Пользователь "+toUserName+" не найден");
+        if (clients.containsKey(toUserName)) {
+            clients.get(toUserName).sendMsg(String.format("[%s]: %s", fromUserName, message));
+        } else {
+            clients.get(fromUserName).sendMsg("SERVER: Пользователь " + toUserName + " не найден");
         }
     }
 }
