@@ -1,8 +1,7 @@
-package org.example;
+package org.example.commands;
 
 public enum Commands {
-    EXIT("/exit"),
-    DIRECT_MESSAGE("/w");
+    EXIT("/exit");
 
     private final String command;
 

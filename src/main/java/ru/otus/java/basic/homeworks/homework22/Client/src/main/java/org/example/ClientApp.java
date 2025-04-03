@@ -8,6 +8,5 @@ public class ClientApp {
             new Client();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
+        }}
 }

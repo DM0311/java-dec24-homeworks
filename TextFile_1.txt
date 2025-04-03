@@ -1,0 +1,4 @@
+1) Hello worlD!
+2) /exit
+3) /auth login password
+4) /kick Tom
