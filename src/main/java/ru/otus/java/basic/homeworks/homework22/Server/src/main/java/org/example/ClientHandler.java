@@ -1,8 +1,10 @@
 package ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example;
 
-import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.model.Message;
-import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.utils.Commands;
-import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.utils.MessageProcessor;
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.message.Message;
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.message.MessageProcessor;
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.commands.ResponseCommands;
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.model.Role;
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.model.User;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,7 +16,9 @@ public class ClientHandler {
     private Server server;
     private DataInputStream in;
     private DataOutputStream out;
-    private String userName;
+    private User user;
+    private boolean authenticated;
+
 
     public ClientHandler(Socket socket, Server server) throws IOException {
         this.socket = socket;
@@ -25,27 +29,80 @@ public class ClientHandler {
         new Thread(() -> {
 
             try {
-                System.out.println("Клиент подключился...");
-                out.writeUTF("SERVER: Введите имя пользователя");
-                userName = in.readUTF();
-                System.out.println(userName + " авторизовался");
-                out.writeUTF("SERVER: Вы авторизовались как " + userName);
-                server.subscribe(this);
+
                 boolean working = true;
-                while (working) {
-                    Message message = MessageProcessor.parse(userName, in.readUTF());
+
+                while (working && !authenticated) {
+                    sendMsg("Перед работой с чатом необходимо выполнить аутентификацию "
+                            + "/auth Login Password \n" +
+                            "или регистрацию /reg login password user");
+                    Message message = MessageProcessor.parse(in.readUTF());
                     switch (message.getCommand()) {
                         case EXIT -> {
-                            sendMsg(Commands.EXIT.getCommand());
+                            sendMsg(ResponseCommands.EXIT.getCommand());
+                            working = false;
+                        }
+                        case AUTH -> {
+                            if (message.getParameters().length != 2) {
+                                sendMsg("Неверный формат команды /auth");
+                                continue;
+                            }
+                            if (server.getAuthenticationProvider().authenticate(
+                                    this,
+                                    message.getParameters()[0],
+                                    message.getParameters()[1])) {
+                                authenticated = true;
+                            }
+                        }
+                        case REGISTER -> {
+                            if (message.getParameters().length != 3) {
+                                sendMsg("Неверный формат команды /reg");
+                                continue;
+                            }
+                            if (server.getAuthenticationProvider().register(
+                                    this,
+                                    message.getParameters()[0],
+                                    message.getParameters()[1],
+                                    message.getParameters()[2])) {
+                                authenticated = true;
+                            }
+                        }
+                    }
+                }
+
+                System.out.println("Клиент " + user.getUsername() + " прошел аутентификацию и подключился ...");
+
+                while (working && authenticated) {
+                    Message message = MessageProcessor.parse(in.readUTF());
+                    switch (message.getCommand()) {
+                        case EXIT -> {
+                            sendMsg(ResponseCommands.EXIT.getCommand());
                             working = false;
                         }
                         case DIRECT_MESSAGE -> {
-                            server.sendDirectMessage(message.getMessageText(),
-                                    message.getFromUser(),
-                                    message.getToUser());
+                            server.sendDirectMessage(message.getParameters()[1],
+                                    user.getUsername(),
+                                    message.getParameters()[0]);
                         }
                         case BROADCAST_MESSAGE -> {
-                            server.sendBroadcastMessage("SERVER: " + userName + " всем - " + message.getMessageText());
+                            server.sendBroadcastMessage("[" + user.getUsername() + "]: " + message.getParameters()[0]);
+                        }
+                        case KICK -> {
+                            if (message.getParameters().length != 1) {
+                                sendMsg("Неверный формат команды /kick");
+                                continue;
+                            }
+                            if (!user.getRole().equals(Role.ADMIN)) {
+                                sendMsg("Недостаточно прав чтобы исключить участника");
+                                continue;
+                            }
+                            ClientHandler kickedUser = server.getClientHandle(message.getParameters()[0]);
+                            kickedUser.sendMsg(ResponseCommands.KICK.getCommand());
+                            server.sendBroadcastMessage("[SERVER]: "
+                                    + "пользователь с именем "
+                                    + message.getParameters()[0]
+                                    + " исключен из чата");
+                            kickedUser.disconnect();
                         }
                     }
                 }
@@ -61,13 +118,18 @@ public class ClientHandler {
     public void sendMsg(String message) {
         try {
             out.writeUTF(message);
+            out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void disconnect() {
