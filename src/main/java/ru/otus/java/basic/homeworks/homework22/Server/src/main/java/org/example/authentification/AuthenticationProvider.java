@@ -4,6 +4,8 @@ import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.
 
 public interface AuthenticationProvider {
     void initialize();
+
     boolean authenticate(ClientHandler clientHandler, String login, String password);
-    boolean register(ClientHandler clientHandler, String login, String password,String username);
+
+    boolean register(ClientHandler clientHandler, String login, String password, String username);
 }

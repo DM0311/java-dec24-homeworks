@@ -25,7 +25,7 @@ public class Client {
                             if (message.equals(ResponseCommands.EXIT.getCommand())) {
                                 break;
                             }
-                            if(message.startsWith("/kick_ok")){
+                            if (message.startsWith("/kick_ok")) {
                                 System.out.println("Вас удалили из чата...");
                                 out.writeUTF("/exit");
                                 break;

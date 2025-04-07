@@ -72,7 +72,7 @@ public class InMemoryAuthProvider implements AuthenticationProvider {
 
     @Override
     public boolean register(ClientHandler clientHandler, String login, String password, String username) {
-        if (login.trim().length() < 3 || login.trim().length() < 3 || login.trim().length() < 3) {
+        if (login.trim().length() < 3 && login.trim().length() < 3 && login.trim().length() < 3) {
             clientHandler.sendMsg("Логин 3+ символа, пароль 3+ символа, имя пользователя 3+ символа");
             return false;
         }
@@ -84,11 +84,11 @@ public class InMemoryAuthProvider implements AuthenticationProvider {
             clientHandler.sendMsg("Указанное имя пользователя уже занято");
             return false;
         }
-        User newUser = new User(login,password,username, Role.USER);
+        User newUser = new User(login, password, username, Role.USER);
         users.add(newUser);
         clientHandler.setUser(newUser);
         server.subscribe(clientHandler);
-        clientHandler.sendMsg("/reg_ok "+newUser.getUsername());
+        clientHandler.sendMsg("/reg_ok " + newUser.getUsername());
         return true;
     }
 }
