@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.commands.Commands;
+import org.example.commands.ResponseCommands;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,8 +22,21 @@ public class Client {
                     while (true) {
                         String message = in.readUTF();
                         if (message.startsWith("/")) {
-                            if (message.equals(Commands.EXIT.getCommand())) {
+                            if (message.equals(ResponseCommands.EXIT.getCommand())) {
                                 break;
+                            }
+                            if (message.startsWith("/kick_ok")) {
+                                System.out.println("Вас удалили из чата...");
+                                out.writeUTF("/exit");
+                                break;
+                            }
+                            if (message.startsWith("/auth_ok")) {
+                                System.out.println("Удалось успешно войти в час с ником "
+                                        + message.split(" ")[1]);
+                            }
+                            if (message.startsWith("/reg_ok")) {
+                                System.out.println("Удалось успешно зарегистрироваться и войти в чаn с ником "
+                                        + message.split(" ")[1]);
                             }
                         } else {
                             System.out.println(message);

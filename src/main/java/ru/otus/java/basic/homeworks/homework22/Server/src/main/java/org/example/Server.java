@@ -1,5 +1,8 @@
 package ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example;
 
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.authentification.AuthenticationProvider;
+import ru.otus.java.basic.homeworks.homework22.Server.src.main.java.org.example.authentification.InMemoryAuthProvider;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,15 +12,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server {
     private int port;
     private ConcurrentHashMap<String, ClientHandler> clients;
+    private AuthenticationProvider authenticationProvider;
 
     public Server(int port) {
         this.port = port;
         this.clients = new ConcurrentHashMap<>();
+        this.authenticationProvider = new InMemoryAuthProvider(this);
     }
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен на порту " + port);
+            authenticationProvider.initialize();
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -29,12 +35,12 @@ public class Server {
     }
 
     public void subscribe(ClientHandler clientHandler) {
-        clients.put(clientHandler.getUserName(), clientHandler);
+        clients.put(clientHandler.getUser().getLogin(), clientHandler);
     }
 
     public void unSubscribe(ClientHandler clientHandler) {
-        clients.remove(clientHandler.getUserName());
-        System.out.println("Клиент " + clientHandler.getUserName() + " отключился");
+        clients.remove(clientHandler.getUser().getLogin());
+        System.out.println("Клиент " + clientHandler.getUser().getLogin() + " отключился");
     }
 
     public void sendBroadcastMessage(String message) {
@@ -44,10 +50,42 @@ public class Server {
     }
 
     public void sendDirectMessage(String message, String fromUserName, String toUserName) {
-        if (clients.containsKey(toUserName)) {
-            clients.get(toUserName).sendMsg(String.format("[%s]: %s", fromUserName, message));
-        } else {
-            clients.get(fromUserName).sendMsg("SERVER: Пользователь " + toUserName + " не найден");
+        ClientHandler from = null;
+        ClientHandler to = null;
+        for (Map.Entry<String, ClientHandler> element : clients.entrySet()) {
+            if (element.getValue().getUser().getUsername().equals(toUserName)) {
+                to = element.getValue();
+            } else if (element.getValue().getUser().getUsername().equals(fromUserName)) {
+                from = element.getValue();
+            }
         }
+
+        if (to == null) {
+            from.sendMsg(String.format("[%s]: %s", "SERVER", "Пользователь не найден"));
+        } else {
+            to.sendMsg(String.format("[%s]: %s", from.getUser().getUsername(), message));
+        }
+    }
+
+    public boolean isLoggedIn(String login) {
+        if (clients.containsKey(login)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public AuthenticationProvider getAuthenticationProvider() {
+        return authenticationProvider;
+    }
+
+    public ClientHandler getClientHandle(String username) {
+        for (Map.Entry<String, ClientHandler> element : clients.entrySet()) {
+            if (element.getValue().getUser().getUsername().equals(username)) {
+                return element.getValue();
+            }
+        }
+        return null;
     }
 }
