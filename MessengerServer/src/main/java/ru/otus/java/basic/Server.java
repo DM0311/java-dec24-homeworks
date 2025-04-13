@@ -7,6 +7,7 @@ import ru.otus.java.basic.authentification.InMemoryAuthProvider;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,8 +19,11 @@ public class Server {
     public Server(int port) {
         this.port = port;
         this.clients = new ConcurrentHashMap<>();
-        //this.authenticationProvider = new InMemoryAuthProvider(this);
-        this.authenticationProvider = new DataBaseAuthProvider(this);
+        try {
+            this.authenticationProvider = new DataBaseAuthProvider(this);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void start() {

@@ -25,14 +25,15 @@ public class DataBaseAuthProvider implements AuthenticationProvider {
             "join roles r on r.id = role_id";
 
 
-    public DataBaseAuthProvider(Server server) {
+    public DataBaseAuthProvider(Server server) throws SQLException {
         this.server = server;
         this.users = new CopyOnWriteArrayList<>();
-        try {
-            this.connection = DriverManager.getConnection(DATABASE_URL,
-                    "postgres",
-                    "admin");
-            Statement statement = connection.createStatement();
+        this.connection = DriverManager.getConnection(DATABASE_URL,
+                "postgres",
+                "admin");
+
+        try (Statement statement = connection.createStatement()) {
+            
             ResultSet rs = statement.executeQuery(USERS_QUERY);
             while (rs.next()) {
 
