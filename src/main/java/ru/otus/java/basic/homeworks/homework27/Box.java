@@ -19,15 +19,14 @@ public class Box<T extends Fruit> {
     }
 
     public boolean compare(Box<? extends Fruit> anotherBox) {
-        if (this.getTotalWeight() == anotherBox.getTotalWeight()) {
-            return true;
-        } else {
-            return false;
-
-        }
+        return this.getTotalWeight() == anotherBox.getTotalWeight();
     }
 
     public void moveFruits(Box<? super T> anotherbox){
+        if(anotherbox==this){
+            System.out.println("Указана та же самая коробка!");
+            return;
+        }
         for (T fruit:fruits){
             anotherbox.addFruit(fruit);
         }
