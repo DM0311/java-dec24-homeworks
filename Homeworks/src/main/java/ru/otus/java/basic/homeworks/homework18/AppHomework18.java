@@ -2,7 +2,6 @@ package ru.otus.java.basic.homeworks.homework18;
 
 import ru.otus.java.basic.homeworks.homework18.advanced.BinaryTree;
 import ru.otus.java.basic.homeworks.homework18.advanced.MergeSort;
-import ru.otus.java.basic.homeworks.homework18.advanced.TreeElement;
 import ru.otus.java.basic.homeworks.homework18.basic.BubbleSort;
 import ru.otus.java.basic.homeworks.homework18.basic.Person;
 import ru.otus.java.basic.homeworks.homework18.basic.PersonDataBase;

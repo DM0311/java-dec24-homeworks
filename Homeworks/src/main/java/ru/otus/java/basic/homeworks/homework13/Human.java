@@ -1,7 +1,6 @@
 package ru.otus.java.basic.homeworks.homework13;
 
 
-import ru.otus.java.basic.homeworks.homework13.transport.Bicycle;
 import ru.otus.java.basic.homeworks.homework13.transport.Transport;
 
 public class Human {

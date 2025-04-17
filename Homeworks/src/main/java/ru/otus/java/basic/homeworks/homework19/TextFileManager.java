@@ -8,7 +8,7 @@ public class TextFileManager {
     private final FileFilter textFileFilter;
     private final File file;
     private boolean isRunning;
-    private TextFileEditor textFileEditor;
+    private ru.otus.java.basic.homeworks.homework19.TextFileEditor textFileEditor;
     private UserCommand userCommand;
     private String rootDir;
 
