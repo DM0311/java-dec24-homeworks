@@ -15,16 +15,17 @@ public class AppHomework28 {
         File file = new File(absPath);
         if (!file.exists()) {
             System.out.println("Указанный файл не найден! - Укажите корректный путь");
+            return;
         }
         System.out.println("Введите искомую последовательность символов");
         String searchPattern = scanner.nextLine();
-        Pattern pattern = Pattern.compile(searchPattern);
+        Pattern pattern = Pattern.compile(Pattern.quote(searchPattern));
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             StringBuilder text = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                text.append(line);
+                text.append(line).append("\n");
             }
             Matcher matcher = pattern.matcher(text);
             int counter = 0;
