@@ -1,6 +1,5 @@
 package ru.otus.java.basic.homeworks.homework32.application;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
