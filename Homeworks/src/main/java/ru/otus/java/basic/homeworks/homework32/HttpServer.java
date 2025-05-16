@@ -26,21 +26,6 @@ public class HttpServer {
             while (true) {
                 Socket socket = serverSocket.accept();
 
-                /*
-                * Вопрос по коду - если использовать следующий код, то сыпет ошибками Socket closed при отправке запрос.
-                * Я правильно понимаю что в таком случае когда есть try-with-resources из-за того что рузультат .accept
-                * отправляется в параллельный то сокет закрывается?
-                *
-                * try (Socket socket = serverSocket.accept()) {
-                * executor.execute(() -> {
-                *   try (InputStream in = socket.getInputStream();
-                         OutputStream out = socket.getOutputStream()) {
-                        byte[] buffer = new byte[8192];
-                        ..........
-                        dispatcher.execute(request, socket.getOutputStream());
-                *
-                * });
-                * */
                 System.out.println("Получено новое соединение");
                 executor.execute(() -> {
                     try (InputStream in = socket.getInputStream();
