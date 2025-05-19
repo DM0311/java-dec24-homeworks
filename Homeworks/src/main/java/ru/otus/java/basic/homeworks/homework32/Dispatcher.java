@@ -16,9 +16,9 @@ public class Dispatcher {
     public Dispatcher() {
         this.processors = new HashMap<>();
         this.itemRepository = new ItemRepository();
-        this.processors.put("/hello", new HelloProcessor());
-        this.processors.put("/calculator", new CalculatorProcessor());
-        this.processors.put("GET /items", new ItemProcessor(itemRepository));
+        this.processors.put("GET /hello", new HelloProcessor());
+        this.processors.put("GET /calculator", new CalculatorProcessor());
+        this.processors.put("GET /items", new GetItemProcessor(itemRepository));
         this.processors.put("POST /items", new AddItemProcessor(itemRepository));
         this.defaultProcessor = new DefaultProcessor();
 

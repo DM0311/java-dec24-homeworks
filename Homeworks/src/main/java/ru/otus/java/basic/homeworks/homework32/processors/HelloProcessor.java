@@ -9,11 +9,20 @@ import java.nio.charset.StandardCharsets;
 public class HelloProcessor implements RequestProcessor{
     @Override
     public void execute(HttpRequest request, OutputStream out) throws IOException {
-        String respose = "" +
-                "HTTP/1.1 200 OK\r\n" +
-                "Content-type: text/html\r\n" +
-                "\r\n" +
-                "<html><body><h1>Hello World!</h1></body></html>";
-        out.write(respose.getBytes(StandardCharsets.UTF_8));
+        try{
+            String respose = "" +
+                    "HTTP/1.1 200 OK\r\n" +
+                    "Content-type: text/html\r\n" +
+                    "\r\n" +
+                    "<html><body><h1>Hello World!</h1></body></html>";
+            out.write(respose.getBytes(StandardCharsets.UTF_8));
+        }catch (RuntimeException e){
+            String respose = "" +
+                    "HTTP/1.1 500 Internal Error\r\n" +
+                    "Content-type: text/html\r\n" +
+                    "\r\n";
+            out.write(respose.getBytes(StandardCharsets.UTF_8));
+        }
+
     }
 }

@@ -1,5 +1,8 @@
 package ru.otus.java.basic.homeworks.homework32;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,11 +12,13 @@ public class HttpRequest {
     private Map<String, String> parameters;
     private String uri;
     private String body;
+    private final Logger logger;
 
 
     public HttpRequest(String rawRequest) {
         this.rawRequest = rawRequest;
         this.parameters = new HashMap<>();
+        this.logger = LogManager.getLogger(HttpRequest.class);
         this.parse();
     }
 
@@ -41,9 +46,9 @@ public class HttpRequest {
         if (shawRawRequest) {
             System.out.println(rawRequest);
         }
-        System.out.println("METHOD: " + method);
-        System.out.println("URI: " + uri);
-        System.out.println("PARAMETERS: " + parameters);
+        logger.info("METHOD: " + method);
+        logger.info("URI: " + uri);
+        logger.info("PARAMETERS: " + parameters);
     }
 
     public String getUri() {
