@@ -1,6 +1,8 @@
 package ru.otus.java.basic.homeworks.homework32.processors;
 
 import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.otus.java.basic.homeworks.homework32.HttpRequest;
 import ru.otus.java.basic.homeworks.homework32.application.Item;
 import ru.otus.java.basic.homeworks.homework32.application.ItemRepository;
@@ -12,9 +14,11 @@ import java.util.List;
 
 public class GetItemProcessor implements RequestProcessor {
     private ItemRepository itemRepository;
+    private final Logger logger;
 
     public GetItemProcessor(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+        this.logger = LogManager.getLogger(GetItemProcessor.class);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class GetItemProcessor implements RequestProcessor {
                     itemResponse;
             out.write(respose.getBytes(StandardCharsets.UTF_8));
         } catch (RuntimeException e){
+            logger.error("Runtime exception " + e.getMessage());
             String respose = "" +
                     "HTTP/1.1 500 Internal Error\r\n" +
                     "Content-type: text/html\r\n" +
